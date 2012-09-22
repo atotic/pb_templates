@@ -1,0 +1,50 @@
+/*
+- every template asset is stored in "template" directory
+- different asset classes are in different directories:
+theme
+book
+layout
+background
+img
+
+- under asset directories, each user has its own directory
+- directories starting with _ are reserved for the system
+*/
+Theme: collection of book templates
+Usage: Design-pick_template
+/theme/_develop/basic_theme.js
+{
+	name: "Basic",
+	books: ['book-_develop-basic_8x11']
+	screenshots:
+}
+
+/book/_develop/basic_8x11.json
+
+{
+	width: 8;
+	height:11;
+	layouts: ['layout-_develop-8x11-3-HHH']
+
+}
+
+/layout/_develop/8x11-3-HHH.json
+{
+	type: cover|flap|back-flap|front-flap
+	image_count: 3
+}
+
+
+Unique identifiers:
+- every template object has a unique identifer that points to a json file
+
+def templateIdToFile(id)
+	type, user, typeId = id.split('-', 3)
+	raise "bad id" unless type && user && typeId
+	raise "bad type" unless type ~= /^(theme|book|layout|background|img)$/
+	raise "bad user" unless user ~= /^_*\w+$/
+	raise "bad type id" unless typeId ~= /^(\d|\w|_)+$/
+	File.join(SvegSettings.book_templates_dir, type, user, typeId + ".json")
+end
+
+
