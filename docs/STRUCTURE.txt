@@ -10,8 +10,10 @@ img
 - under asset directories, each user has its own directory
 - directories starting with _ are reserved for the system
 */
+
 Theme: collection of book templates
 Usage: Design-pick_template
+
 /theme/_develop/basic_theme.js
 {
 	name: "Basic",
@@ -19,7 +21,7 @@ Usage: Design-pick_template
 	screenshots:
 }
 
-/book/_develop/basic_8x11.json
+/book/_develop/basic_8x11.js
 
 {
 	width: 8;
@@ -28,7 +30,7 @@ Usage: Design-pick_template
 
 }
 
-/layout/_develop/8x11-3-HHH.json
+/layout/_develop/8x11-3-HHH.js
 {
 	type: cover|flap|back-flap|front-flap
 	image_count: 3
@@ -48,3 +50,34 @@ def templateIdToFile(id)
 end
 
 
+Brainstorm:
+This week implementation:
+Create a book, with basic pages
+
+Walkthrough:
+Get a theme, display list of sizes, images
+Pick one, create the book:
+- each page gets the initial layout. How?
+How does layout generate html?
+Layout API:
+
+Layout decides:
+- what images are on the page
+- where to auto-place images
+- what editing controls are available for the image
+- size of the page
+
+The flow:
+layout->createPage(jsPage) -> fills in jsPage with layout html.
+what does layoutHtml looks like?
+we can't use any css for layoutHtml, all css is inlined
+<div class='page'> // css: width/height
+	<img src='/photo/2
+
+var LayoutMaster = {
+
+}
+
+var LayoutWrapper = function() {
+
+};
