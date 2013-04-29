@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" sodipodi:docname="8ball.svg" height="128px" sodipodi:version="0.32" width="128px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:cc="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" sodipodi:docbase="/home/nicu/Desktop/svg" xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd">
+ <metadata>
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <cc:Work rdf:about="">
+    <dc:title>8ball</dc:title>
+    <dc:description/>
+    <dc:subject>
+     <rdf:Bag>
+      <rdf:li>sports</rdf:li>
+      <rdf:li>entertainment</rdf:li>
+     </rdf:Bag>
+    </dc:subject>
+    <dc:publisher>
+     <cc:Agent rdf:about="http://www.openclipart.org/">
+      <dc:title>Open Clip Art Library</dc:title>
+     </cc:Agent>
+    </dc:publisher>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Nicu Buculei</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:rights>
+     <cc:Agent>
+      <dc:title>Nicu Buculei</dc:title>
+     </cc:Agent>
+    </dc:rights>
+    <dc:date/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <cc:license rdf:resource="http://web.resource.org/cc/PublicDomain"/>
+    <dc:language>en</dc:language>
+   </cc:Work>
+   <cc:License rdf:about="http://web.resource.org/cc/PublicDomain">
+    <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <defs id="defs4">
+  <linearGradient id="linearGradient1344">
+   <stop id="stop1346" stop-color="#b2b2b2" offset="0"/>
+   <stop id="stop1348" stop-color="#fff" stop-opacity="0" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient1419" gradientUnits="userSpaceOnUse" cy="469.34" cx="574.02" gradientTransform="matrix(1.592 -1.2873 1.664 2.0578 -1126.3 260.99)" r="41.5">
+   <stop id="stop1336" stop-color="#fff" offset="0"/>
+   <stop id="stop1338" stop-color="#fff" stop-opacity=".36458" offset="1"/>
+  </radialGradient>
+  <radialGradient id="radialGradient1421" gradientUnits="userSpaceOnUse" cy="546.36" cx="355" gradientTransform="matrix(.81243 -1.0401 .92656 .72375 -439.65 520.18)" r="88.5">
+   <stop id="stop1323" stop-color="#fff" stop-opacity=".41667" offset="0"/>
+   <stop id="stop1325" stop-color="#fff" stop-opacity="0" offset="1"/>
+  </radialGradient>
+  <radialGradient id="radialGradient1423" xlink:href="#linearGradient1344" gradientUnits="userSpaceOnUse" cy="615.63" cx="384.16" gradientTransform="matrix(1.0452 .0064321 -.0030801 .57455 -15.462 259.16)" r="23"/>
+ </defs>
+ <sodipodi:namedview id="base" bordercolor="#666666" pagecolor="#ffffff" showgrid="false" borderopacity="1.0"/>
+ <g id="layer1">
+  <g id="g1374" transform="matrix(.66330 0 0 .66330 -175.48 -299.76)">
+   <path id="path1306" sodipodi:rx="88.500000" sodipodi:ry="88.500000" sodipodi:type="arc" d="m450 548.86a88.5 88.5 0 1 1 -177 0 88.5 88.5 0 1 1 177 0z" transform="matrix(.82766 .56122 -.56122 .82766 370.33 -108.29)" sodipodi:cy="548.86218" sodipodi:cx="361.50000"/>
+   <path id="path1308" sodipodi:rx="41.500000" sodipodi:ry="41.500000" sodipodi:type="arc" d="m610 487.86a41.5 41.5 0 1 1 -83 0 41.5 41.5 0 1 1 83 0z" transform="matrix(.82766 .56122 -.56122 .82766 178.16 -183.03)" sodipodi:cy="487.86218" sodipodi:cx="568.50000" fill="url(#radialGradient1419)"/>
+   <path id="text1314" d="m373.61 539.8c-1.9-1.29-2.98-1.45-4.7-1.11-1.72 0.35-3.96 1.18-5.27 3.11s-2.06 3.59-1.74 5.31c0.33 1.71 1.69 3.38 3.59 4.66 1.87 1.28 4.17 2.09 5.86 1.75 1.7-0.36 2.7-1.85 4.01-3.78 1.32-1.94 1.55-4.32 1.24-6.02-0.3-1.71-1.11-2.65-2.99-3.92m-5.13-8.36c-1.9-2.34-3.16-4.9-3.36-7.22-0.2-2.31 1.41-3.93 2.92-6.16 2.25-3.32 6.31-4.44 9.96-4.5s6.03 0.56 10.82 3.81c4.75 3.22 6.36 5.76 7.65 9.18 1.31 3.4 1.53 7.24-0.73 10.57-1.51 2.23-2.96 4.15-5.2 4.81-2.22 0.67-4.47 0.39-7.35-0.51 2.17 2.54 2.92 4.8 3.14 7.39 0.25 2.58-0.03 5.43-1.75 7.96-2.64 3.89-5.15 6.31-9.1 6.55-3.93 0.23-9.72-1.13-14.81-4.58-5.11-3.46-8.39-8.16-9.66-11.92-1.24-3.76 0.05-7.09 2.69-10.99 1.72-2.53 4.6-3.81 7.07-4.54 2.5-0.74 4.54-0.92 7.71 0.15m7.71-6.27c-1.06 1.57-1.77 2.84-1.48 4.27 0.31 1.44 1.59 2.92 3.2 4.01 1.58 1.07 3.36 1.76 4.79 1.5s2.4-1.45 3.46-3.01 1.3-3.52 0.99-4.93c-0.28-1.42-1.07-2.2-2.65-3.27-1.62-1.1-2.6-1.24-4.04-0.99-1.44 0.26-3.23 0.88-4.27 2.42" sodipodi:nodetypes="csscscscccsssscscccscscsscccssscscc"/>
+   <path id="path1319" sodipodi:rx="88.500000" sodipodi:ry="88.500000" sodipodi:type="arc" d="m450 548.86a88.5 88.5 0 1 1 -177 0 88.5 88.5 0 1 1 177 0z" transform="matrix(.82766 .56122 -.56122 .82766 370.33 -108.29)" sodipodi:cy="548.86218" sodipodi:cx="361.50000" fill="url(#radialGradient1421)"/>
+   <path id="path1342" sodipodi:rx="23.000000" sodipodi:ry="14.500000" sodipodi:type="arc" d="m408 614.86a23 14.5 0 1 1 -46 0 23 14.5 0 1 1 46 0z" transform="matrix(1.4128 .43508 -.40596 1.3182 48.542 -368.71)" sodipodi:cy="614.86218" sodipodi:cx="385.00000" fill="url(#radialGradient1423)"/>
+   <path id="path1370" sodipodi:rx="23.000000" sodipodi:ry="14.500000" sodipodi:type="arc" d="m408 614.86a23 14.5 0 1 1 -46 0 23 14.5 0 1 1 46 0z" transform="matrix(.19320 .78773 -0.735 .18027 671.9 151.26)" sodipodi:cy="614.86218" sodipodi:cx="385.00000" fill="url(#radialGradient1423)"/>
+  </g>
+ </g>
+</svg>
