@@ -96,6 +96,7 @@ function() {
 					}
 					else {
 						assetData.type = 'text';
+						assetData.zindex = 1;
 						layout.push(assetData);
 					}
 				}
