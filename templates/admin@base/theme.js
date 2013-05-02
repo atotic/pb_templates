@@ -62,12 +62,14 @@ function() {
 
 	var GridLayout = {
 		id: 'gridLayout',
-		getPageDesign: function(assetData, width, height, layoutData) {
-			layoutData = $.extend({inset: 0}, layoutData);
+		getPageLayout: function(assetData, width, height, layoutData) {
+			layoutData = $.extend({
+				inset: 0
+			}, layoutData);
 			width = Math.max(width - 2 * layoutData.inset, 0);
 			height = Math.max(height - 2 * layoutData.inset, 0);
 			if (!width || width < 50 || !height || height < 50) {
-				console.error('getPageDesign width/height too small', width, height);
+				console.error('getPageLayout width/height too small', width, height);
 				return;
 			}
 			// Generate optimum tiles
@@ -78,7 +80,7 @@ function() {
 			var tileCountV = Math.ceil(totalCount / tileCountH);
 			var widthSegments = Utils.segmentLine(width, tileCountH);
 			var heightSegments = Utils.segmentLine(height, tileCountV);
-			var layout = [];
+			var layout = { photos: [], texts: [] }
 			for (var v=0; v < tileCountV; v++) {
 				for (var h=0; h < tileCountH; h++) {
 					var imgIdx = v * tileCountH + h;
@@ -92,36 +94,35 @@ function() {
 					}
 					if (imgIdx < photoCount) {
 						assetData.type = 'photo';
-						layout.push(assetData);
+						layout.photos.push( assetData );
 					}
 					else {
 						assetData.type = 'text';
 						assetData.zindex = 1;
-						layout.push(assetData);
+						layout.texts.push( assetData );
 					}
 				}
 			}
-			return {
-				layout: layout
-			}
+			return layout;
 		}
 	};
 
 	var GridSpacedLayout = {
 		id: 'GridSpacedLayout',
-		getPageDesign: function(assetData, width, height, layoutData) {
+		getPageLayout: function(assetData, width, height, layoutData) {
 			layoutData = $.extend({
 				spaceOffset: 0
 			}, layoutData);
-			var design = GridLayout.getPageDesign(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
-			var layout = design.layout;
-			for (var i=0; i < layout.length; i++) {
-				layout[i].top += layoutData.spaceOffset;
-				layout[i].left += layoutData.spaceOffset;
-				layout[i].width -= layoutData.spaceOffset * 2;
-				layout[i].height -= layoutData.spaceOffset * 2;
+			var layout = GridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
+			var applyOffset = function( asset ) {
+				asset.top += layoutData.spaceOffset;
+				asset.left += layoutData.spaceOffset;
+				asset.width -= layoutData.spaceOffset * 2;
+				asset.height -= layoutData.spaceOffset * 2;
 			}
-			return design;
+			layout.photos.forEach( applyOffset );
+			layout.texts.forEach( applyOffset );
+			return layout;
 		},
 	};
 
