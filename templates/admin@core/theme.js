@@ -1,71 +1,16 @@
-// Base Theme 'theme://admin@base/'
+// Base Theme 'theme://admin@core/'
 function() {
-	var Utils = {
-		// frameWidth can be undefined, number, or [number]
-		canonicalFrameWidth: function(frameWidth) {
-			if (frameWidth === undefined)
-				return 0;
-			if (typeof frameWidth == 'number')
-				return [frameWidth, frameWidth, frameWidth, frameWidth];
-			switch(frameWidth.length) {
-				case 1:
-					return [frameWidth[0], frameWidth[0], frameWidth[0], frameWidth[0]];
-					break;
-				case 2:
-					return [frameWidth[0], frameWidth[1], frameWidth[0], frameWidth[1]];
-					break;
-				case 3:
-					return [frameWidth[0], frameWidth[1], frameWidth[2], frameWidth[1]];
-					break;
-				case 4:
-					return frameWidth;
-					break;
-				default:
-					console.error('illegal frame width ', frameWidth);
-					return [0,0,0,0];
-			}
-		},
-		// line gets divided into segmentCount,
-		// segments are forced to integer length
-		// return: [segmentCount + 1] of segment terminating points
-		segmentLine: function(line, segmentCount) {
-			if (isNaN(segmentCount) || segmentCount == 0)
-				return [];
-			var rem = line % segmentCount;
-			var segLength = Math.round((line - rem) / segmentCount);
-			var segments = new Array(segmentCount + 1);
-			segments[0] = 0;
-			for (var i=1; i<= segmentCount; i++) {
-				var padding = 0;
-				if (rem > 0) { // pad each segment by 1 until no more extra pixels
-					padding += 1;
-					rem -=1;
-				}
-				segments[i] = segments[i-1] + segLength + padding;
-			}
-			return segments;
-		},
-		assetGenericCount: function(assetData, type) {
-			var c = 0;
-			for (var p in assetData)
-				if (assetData[p].type === type)
-					c++;
-			return c;
-		},
-		assetPhotoCount: function(assetData) {
-			return this.assetGenericCount(assetData, 'photo');
-		},
-		assetTextCount: function(assetData) {
-			return this.assetGenericCount(assetData, 'text');
-		}
-	};
 
-	var GridLayout = {
+	var GridLayout = function(defaults) {
+		this.defaults = $.extend( {
+			inset: 0
+		}, defaults );
+	}
+
+	GridLayout.prototype = {
 		id: 'gridLayout',
 		getPageLayout: function(assetData, width, height, layoutData) {
-			layoutData = $.extend({
-				inset: 0
-			}, layoutData);
+			layoutData = $.extend( {}, this.defaults, layoutData );
 			width = Math.max(width - 2 * layoutData.inset, 0);
 			height = Math.max(height - 2 * layoutData.inset, 0);
 			if (!width || width < 50 || !height || height < 50) {
@@ -73,13 +18,13 @@ function() {
 				return;
 			}
 			// Generate optimum tiles
-			var photoCount = Utils.assetPhotoCount(assetData);
-			var textCount = Utils.assetTextCount(assetData);
+			var photoCount = PB.ThemeUtils.assetPhotoCount(assetData);
+			var textCount = PB.ThemeUtils.assetTextCount(assetData);
 			var totalCount = photoCount + textCount;
 			var tileCountH = Math.round(Math.sqrt(totalCount * width / height));
 			var tileCountV = Math.ceil(totalCount / tileCountH);
-			var widthSegments = Utils.segmentLine(width, tileCountH);
-			var heightSegments = Utils.segmentLine(height, tileCountV);
+			var widthSegments = PB.ThemeUtils.segmentLine(width, tileCountH);
+			var heightSegments = PB.ThemeUtils.segmentLine(height, tileCountV);
 			var layout = { photos: [], texts: [] }
 			for (var v=0; v < tileCountV; v++) {
 				for (var h=0; h < tileCountH; h++) {
@@ -107,13 +52,16 @@ function() {
 		}
 	};
 
-	var GridSpacedLayout = {
-		id: 'GridSpacedLayout',
+	var GridSpacedLayout = function(defaults) {
+		this.defaults = $.extend( {
+			spaceOffset: 0
+		}, defaults );
+	}
+	GridSpacedLayout.prototype = {
+		id: 'gridSpacedLayout',
 		getPageLayout: function(assetData, width, height, layoutData) {
-			layoutData = $.extend({
-				spaceOffset: 0
-			}, layoutData);
-			var layout = GridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
+			layoutData = $.extend( {}, this.defaults, layoutData );
+			var layout = BaseTheme.layouts.gridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
 			var applyOffset = function( asset ) {
 				asset.top += layoutData.spaceOffset;
 				asset.left += layoutData.spaceOffset;
@@ -209,10 +157,10 @@ function() {
 
 
 	var BaseTheme = {
-		id: 'admin@base',
+		id: 'admin@core',
 		layouts: {
-			gridLayout : GridLayout,
-			gridSpacedLayout : GridSpacedLayout
+			gridLayout : new GridLayout(),
+			gridSpacedLayout : new GridSpacedLayout()
 		},
 		backgrounds: {
 			cssBackground: CssBackground
@@ -222,8 +170,7 @@ function() {
 		},
 		widgets: {
 			photoWidget: new PhotoWidget()
-		},
-		utilities: Utils
+		}
 	 };
 	 return BaseTheme;
 }()
