@@ -1,6 +1,18 @@
 function() {
 "use strict"
 
+	function lowerRightText(layout, assetData, width, height, options) {
+		if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
+			var textWidth = Math.min( width, 350);
+			var textHeight = 40;
+			layout.texts.push( {
+				top: height - textHeight - PB.ThemeUtils.gutter,
+				left: width - textWidth - PB.ThemeUtils.gutter,
+				width: textWidth,
+				height: textHeight
+			});
+		}
+	}
 	// Single page
 	var layout1 = {
 		getPageLayout: function(assetData, width, height, options) {
@@ -11,16 +23,7 @@ function() {
 				],
 				texts: []
 			};
-			if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-				var textWidth = Math.min( width, 350);
-				var textHeight = 40;
-				layout.texts.push( {
-					top: height - textHeight - PB.ThemeUtils.gutter,
-					left: width - textWidth - PB.ThemeUtils.gutter,
-					width: textWidth,
-					height: textHeight
-				});
-			}
+			lowerRightText(layout, assetData, width, height, options);
 			return layout;
 		}
 	};
@@ -34,22 +37,53 @@ function() {
 					width: widthSegments[ i+1 ] - widthSegments[i],
 					height: height
 				});
-			if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-				var textWidth = Math.min( width, 350);
-				var textHeight = 40;
-				layout.texts.push( {
-					top: height - textHeight - PB.ThemeUtils.gutter,
-					left: width - textWidth - PB.ThemeUtils.gutter,
-					width: textWidth,
-					height: textHeight
-				});
-			}
+			lowerRightText(layout, assetData, width, height, options);
 			return layout;
 		}
 	}
 
-	var layout2VS = {
+	var layout2SV = {
+		getPageLayoutWide: function(assetData, width, height, options) {
+			var layout = { photos: [], texts: [] };
+			layout.photos.push( {
+				top:0, left:0,
+				width: width - height,
+				height: height
+			});
+			layout.photos.push( {
+				top: 0, left: width - height,
+				width: height,
+				height: height
+			});
+			lowerRightText(layout, assetData, width, height, options);
+			return layout;
+		},
+		getPageLayout: function(assetData, width, height, options) {
+			return PB.ThemeUtils.layoutByAspect( assetData, width, height, options, {
+				wide: this.getPageLayoutWide,
+				square: layout2VV.getPageLayout
+			});
+		}
+	}
 
+	var layout2HH = {
+		getPageLayout: function(assetData, width, height, options) {
+			var layout = { photos: [], texts: [] };
+			var heightSegments = PB.ThemeUtils.segmentLine(height, 2);
+			layout.photos.push( {
+				top: 0, left: 0,
+				width: width,
+				height: heightSegments[1]
+			});
+			layout.photos.push( {
+				top: heightSegments[1],
+				left: 0,
+				width: width,
+				height: heightSegments[2] - heightSegments[1]
+			});
+			lowerRightText(layout, assetData, width, height, options);
+			return layout;
+		}
 	}
 
 	var layout3HHH = {
@@ -74,20 +108,19 @@ function() {
 				width: widthSegments[2] - widthSegments[1],
 				height: heightSegments[2] - heightSegments[1]
 			});
-			if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-				var textWidth = Math.min( width, 350);
-				var textHeight = 40;
-				layout.texts.push( {
-					top: height - textHeight - PB.ThemeUtils.gutter,
-					left: width - textWidth - PB.ThemeUtils.gutter,
-					width: textWidth,
-					height: textHeight
-				});
-			}
+			lowerRightText(layout, assetData, width, height, options);
+
 			return layout;
 		}
 	}
 
+	var layout3VHH = {
+		getPageLayout: function( assetData, width, height, options) {
+			var layout = { photos:[], texts:[] }
+			var widthSegments = PB.ThemeUtils.segmentLine( width, 2);
+			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+		}
+	}
 	var layout4HHHH = {
 		getPageLayout: function( assetData, width, height, options) {
 			var layout = { photos: [], texts:[] };
@@ -102,16 +135,7 @@ function() {
 						height: heightSegments[v+1] - heightSegments[v]
 					});
 				}
-			if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-				var textWidth = Math.min( width, 350);
-				var textHeight = 40;
-				layout.texts.push( {
-					top: height - textHeight - PB.ThemeUtils.gutter,
-					left: width - textWidth - PB.ThemeUtils.gutter,
-					width: textWidth,
-					height: textHeight
-				});
-			}
+			lowerRightText(layout, assetData, width, height, options);
 			return layout;
 		}
 	}
@@ -148,33 +172,24 @@ function() {
 
 	var defaultLayout = {
 		gridLayout: PB.ThemeCache.resource('theme://admin@core/layouts/gridLayout'),
-		getPageLayout: function(assetData, width, height, layoutOptions) {
+		getPageLayout: function(assetData, width, height, options) {
 			var myAssetData = {};
 
 			for (var p in assetData)
 				if (assetData[p].type === 'photo')
 					myAssetData[p] = { type: 'photo' };
 
-			var layout = this.gridLayout.getPageLayout(myAssetData, width, height, layoutOptions);
+			var layout = this.gridLayout.getPageLayout(myAssetData, width, height, options);
 			if (layout.photos.length > 0) {
 				var lastAsset = layout.photos[ layout.photos.length - 1];
 				if (lastAsset.left + lastAsset.width < width)
 					lastAsset.width = width - lastAsset.left;
 			}
-			if ( PB.ThemeUtils.assetPhotoCount( assetData ) > 0 ) {
-				var textWidth = Math.min( width, 350);
-				var textHeight = 40;
-				layout.texts.push( {
-					top: height - textHeight - PB.ThemeUtils.gutter,
-					left: width - textWidth - PB.ThemeUtils.gutter,
-					width: textWidth,
-					height: textHeight
-				});
-			}
+			lowerRightText(layout, assetData, width, height, options);
+
 			return layout;
 		}
 	}
-
 
 
 	var uniformLayout = {
@@ -183,7 +198,7 @@ function() {
 			1: layout1,
 			'1t': layout1,
 			2: layout2VV,
-			'2t': layout2VV,
+			'2t': layout2HH,
 			3: layout3HHH,
 			'3t': layout3HHH,
 			4: layout4HHHH,
