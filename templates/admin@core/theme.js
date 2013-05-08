@@ -1,6 +1,43 @@
 // Base Theme 'theme://admin@core/'
 function() {
 
+
+/* sample config:
+	1: layout1,
+	'1t': layout1,
+	2: layout2VV,
+	'2t': layout2HH,
+	3: layout3SVV,
+	'3t': layout3SVV,
+	4: layout4sHHs,
+	'4t': layout4sHHs,
+	5: layout5Hssss,
+	'5t': layout5Hssss,
+	'default': defaultLayout
+*/
+	var ConfigLayout = function(config) {
+		this.layouts = config;
+	}
+
+	ConfigLayout.prototype = {
+		constructor: ConfigLayout,
+		getMatchingLayout: function(assetData, width, height, layoutOptions) {
+			var photoCount = PB.ThemeUtils.assetPhotoCount( assetData );
+			var textCount = PB.ThemeUtils.assetTextCount( assetData );
+			var photoIndex = photoCount;
+			var textIndex = textCount ? photoIndex + "t" : null;
+			if (textIndex && textIndex in this.layouts)
+				return this.layouts[ textIndex ];
+			if (photoIndex in this.layouts)
+				return this.layouts[ photoIndex];
+			return this.layouts[ 'default' ];
+		},
+		getPageLayout: function(assetData, width, height, layoutOptions) {
+			var layout = this.getMatchingLayout( assetData, width, height, layoutOptions);
+			return layout.getPageLayout( assetData, width, height, layoutOptions );
+		}
+	}
+
 	var GridLayout = function(defaults) {
 		this.defaults = $.extend( {
 			inset: 0
@@ -9,6 +46,7 @@ function() {
 
 	GridLayout.prototype = {
 		id: 'gridLayout',
+		constructor: GridLayout,
 		getPageLayout: function(assetData, width, height, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
 			width = Math.max(width - 2 * layoutData.inset, 0);
@@ -60,7 +98,7 @@ function() {
 		id: 'gridSpacedLayout',
 		getPageLayout: function(assetData, width, height, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
-			var layout = BaseTheme.layouts.gridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
+			var layout = CoreTheme.layouts.gridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
 			var applyOffset = function( asset ) {
 				asset.top += layoutData.spaceOffset;
 				asset.left += layoutData.spaceOffset;
@@ -140,6 +178,7 @@ function() {
 		}, options);
 	};
 	PhotoWidget.prototype = {
+		prototype: PhotoWidget,
 		defaultWidth: function( widgetOptions ) {
 			return widgetOptions.defaultWidth || this.options.defaultWidth;
 		},
@@ -155,9 +194,10 @@ function() {
 	}
 
 
-	var BaseTheme = {
+	var CoreTheme = {
 		id: 'admin@core',
 		layouts: {
+			configLayout : new ConfigLayout(),
 			gridLayout : new GridLayout(),
 			gridSpacedLayout : new GridSpacedLayout()
 		},
@@ -171,5 +211,5 @@ function() {
 			photoWidget: new PhotoWidget()
 		}
 	 };
-	 return BaseTheme;
+	 return CoreTheme;
 }()
