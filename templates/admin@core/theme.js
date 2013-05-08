@@ -4,7 +4,6 @@ function() {
 
 /* sample config:
 	1: layout1,
-	'1t': layout1,
 	2: layout2VV,
 	'2t': layout2HH,
 	3: layout3SVV,
@@ -17,6 +16,8 @@ function() {
 */
 	var ConfigLayout = function(config) {
 		this.layouts = config;
+		if (config && !('default' in config))
+			console.warn("ConfigLayout has no default", config);
 	}
 
 	ConfigLayout.prototype = {
@@ -96,6 +97,7 @@ function() {
 	}
 	GridSpacedLayout.prototype = {
 		id: 'gridSpacedLayout',
+		constructor: GridSpacedLayout,
 		getPageLayout: function(assetData, width, height, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
 			var layout = CoreTheme.layouts.gridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));

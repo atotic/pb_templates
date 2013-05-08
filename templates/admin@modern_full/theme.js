@@ -354,7 +354,7 @@ function() {
 	var horizontalLayout = new configLayout.constructor(
 	{
 		1: layout1,
-		2: layout2VV,
+		2: layout2HH,
 		3: layout3HHH,
 		4: layout4HHHH,
 		5: layout5Hssss,
@@ -366,28 +366,40 @@ function() {
 		2: layout2VV,
 		3: layout3VHH,
 		4: layout4sHHs,
-		5: layout5Vhhhh
+		5: layout5Vhhhh,
+		'default': defaultLayout
 	});
 
 
 	var Theme = {
 		id: "admin@modern_full",
 		title: "Modern Theme (full)",
-		description: "Long description",
-		screenshots: ["/t/_test/family/showcase1.jpg"],
+		description: "Full coverage layouts.",
+		screenshots: ["/t/admin@modern_full/showcase.jpg"],
 		designs: {
 		},
 		layouts: {
 			horizontalLayout: horizontalLayout,
-			verticalLayout: verticalLayout
+			verticalLayout: verticalLayout,
+		},
+		rawlayouts: {
+			layout1: layout1,
+			layout2VV: layout2VV,
+			layout2SV: layout2SV,
+			layout2HH: layout2HH,
+			layout3HHH: layout3HHH,
+			layout3VHH: layout3VHH,
+			layout3SVV: layout3SVV,
+			layout4HHHH: layout4HHHH,
+			layout4sHHs: layout4sHHs,
+			layout5Hssss: layout5Hssss,
+			layout5Vhhhh: layout5Vhhhh
 		},
 		backgrounds: {
 		},
 		frames: {
 		},
 		widgets: {
-		},
-		sized: {
 		}
 	};
 	return Theme;
