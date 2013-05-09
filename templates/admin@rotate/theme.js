@@ -50,6 +50,21 @@ function() {
 		}
 	}
 
+	var layout2HH = {
+		getPageLayoutWide: function(assetData, width, height, options) {
+
+		},
+		getPageLayoutSquare: function(assetData, width, height, options) {
+
+		},
+		getPageLayout: function(assetData, width, height, options) {
+			PB.ThemeCache.layoutByAspect(assetData, width, height, options, {
+				wide: this.getPageLayoutWide,
+				square: this.getPageLayoutSquare
+			});
+		}
+	}
+
 	var defaultLayout = {
 		gridLayout: PB.ThemeCache.resource('theme://admin@core/layouts/gridSpacedLayout'),
 		getPageLayout: function(assetData, width, height, options) {
@@ -60,7 +75,7 @@ function() {
 			var hasText = PB.ThemeUtils.assetTextCount( assetData ) > 0;
 			var myHeight = hasText ? height - textHeight - inset: height;
 			var layout = this.gridLayout.getPageLayout(myAssetData, width, myHeight, { spaceOffset: 12 });
-			var rotations = [1, -2, 2, -1, 3, 1, -1];
+			var rotations = [1, -2, 2, -1, 3, 1, -2];
 			for (var i=0; i< layout.photos.length; i++)
 				layout.photos[i].rotate = rotations[i % rotations.length ];
 			centerText( layout, assetData, width, height, options);

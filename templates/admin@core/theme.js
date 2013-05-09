@@ -46,7 +46,6 @@ function() {
 	}
 
 	GridLayout.prototype = {
-		id: 'gridLayout',
 		constructor: GridLayout,
 		getPageLayout: function(assetData, width, height, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
@@ -96,7 +95,6 @@ function() {
 		}, defaults );
 	}
 	GridSpacedLayout.prototype = {
-		id: 'gridSpacedLayout',
 		constructor: GridSpacedLayout,
 		getPageLayout: function(assetData, width, height, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
@@ -113,51 +111,50 @@ function() {
 		},
 	};
 
-	var CssBackground = {
-		id: 'cssBackground',
-		sampleOption: {
-			css: {
-				backgroundColor: 'transparent',
-				backgroundPosition : '0% 0%',
-				backgroundSize: 'auto auto',
-				backgroundRepeat: 'repeat',
-				backgroundClip: 'border-box',
-				backgroundImage: '$IMG'	// Image URLs are substituted with appropriate resolution
+	var CssBackground = function(defaultCss) {
+		this.defaultCss = defaultCss || {
+			css: { // from http://lea.verou.me/css3patterns/#weave
+				background: 'linear-gradient(135deg, #708090 22px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px), linear-gradient(225deg, #708090 22px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px) 0 64px',
+				backgroundColor: '#708090',
+				backgroundSize: '64px 128px',
+				backgroundImageSample: 'url($IMG)'
 			},
-			imageSubstitution: {
-				$IMG: {
-					small: '',
-					display: '',
-					original: ''
-				}
+			imageIds: {	// backgroundImage
+				$IMG: 'PB.TemplatePhoto image id'
 			}
-		},
+		}
+	}
 
+	CssBackground.prototype = {
+		constructor: CssBackground,
 		fillBackground: function( $div, backgroundData, options) {
-			backgroundData = $.extend({
-				css: { // from http://lea.verou.me/css3patterns/#weave
-					background: 'linear-gradient(135deg, #708090 22px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px), linear-gradient(225deg, #708090 22px, #d9ecff 22px, #d9ecff 24px, transparent 24px, transparent 67px, #d9ecff 67px, #d9ecff 69px, transparent 69px) 0 64px',
-					backgroundColor: '#708090',
-					backgroundSize: '64px 128px'
-				}
-			}, backgroundData);
+			options = $.extend( {}, {
+				resolution: PB.PhotoProxy.LARGE
+			}, options);
+			backgroundData = $.extend( {}, this.defaultCss, backgroundData );
 			if (backgroundData.css.backgroundImage) {
 				var defaultSize = 'original';
 				var match = backgroundData.css.backgroundImage.match(/(\$[\w]+)/g);
-				for (var i=0; i<match.length; i++) {
-					if (match[i] in backgroundData.imageSubstitution) {
-						debugger;	// need url substitution here
-						backgroundData.css.backgroundImage = backgroundData.css.backgroundImage.replace(match[i], backgroundData.imageSubstitution[p][defaultSize]);
-					}
-					else {
-						console.error("unable to substitute css image " + match[i]);
-						debugger;
-					}
+				if (match) {
+					for (var i=0; i<match.length; i++)
+						try {
+							if (! (match[i] in backgroundData.imageIds))
+								throw new Error('CssBackground.fillBackground cant find photo id' + match[i]);
+							var tPhoto = PB.TemplatePhoto.get( backgroundData.imageIds[ match[i]] );
+							backgroundData.css.backgroundImage =
+								backgroundData.css.backgroundImage.replace(
+									match[i],
+									tPhoto.getUrl(options.resolution)
+								);
+						}
+						catch(ex) {
+							console.error('error creating background image', ex.message);
+						}
 				}
 			}
 			$div.css(backgroundData.css);
 		}
-	};
+	}
 
 	var CssFrame = {
 		id: 'cssFrame',
@@ -204,7 +201,7 @@ function() {
 			gridSpacedLayout : new GridSpacedLayout()
 		},
 		backgrounds: {
-			cssBackground: CssBackground
+			cssBackground: new CssBackground()
 		},
 		frames: {
 			cssFrame: CssFrame
