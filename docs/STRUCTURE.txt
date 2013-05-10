@@ -1,83 +1,110 @@
-/*
-- every template asset is stored in "template" directory
-- different asset classes are in different directories:
-theme
-book
-layout
-background
-img
+Template structure:
 
-- under asset directories, each user has its own directory
-- directories starting with _ are reserved for the system
-*/
+# Directories
 
-Theme: collection of book templates
-Usage: Design-pick_template
+	pb_templates
+		/templates
+			/<theme_id>
+				theme.js		Theme javascript definition
+				showcase.jpg
+				<theme images>
+# theme.js
 
-/theme/_develop/basic_theme.js
-{
-	name: "Basic",
-	books: ['book-_develop-basic_8x11']
-	screenshots:
-}
+Javascript describing all code needed to render the theme.
+It can depend on other themes.
+Theme dependencies are resolved automatically.
+Gets loaded by PB.ThemeCache using ajax:
+	- fetch the js
+	- eval to find dependencies
+	- load dependecies
+	- eval the finished theme
+WARNING: theme.js gets executed twice. Once to detect dependencies, 2nd time for real
 
-/book/_develop/basic_8x11.js
+## Minimal theme.js file structure
 
-{
-	width: 8;
-	height:11;
-	layouts: ['layout-_develop-8x11-3-HHH']
+	function() {
+	"use strict"
+		var Theme = {
+			id: "admin@sports",
+			title: "Sports theme",
+			description: "Soccer, Basketball, Football",
+			screenshots: ["/t/admin@core/showcase.jpg"],
+			designs: {},
+			layouts: {},
+			rawlayouts:{},
+			backgrounds: {},
+			frames: {},
+			widgets: {},
+			photos: {}
+		};
+		return Theme;
+	}()
 
-}
+# Functionality
 
-/layout/_develop/8x11-3-HHH.js
-{
-	type: cover|flap|back-flap|front-flap
-	image_count: 3
-}
+- Themes extend other themes, always remixing
+- Themes can access resources from other themes, but no recursion
+- admin@ themes contain common system funcionality
+- Loaded with ThemeCache.
+- Theme urls can be anything. By default, theme url is
+http://t/<theme_id>/theme.js
+- Resources within a theme can be accessed through 'theme://' url scheme
+- Load resources with PB.ThemeCache.resource('theme://admin@core/layouts/gridLayout')
+
+## FLEXIFILL
+Each page design must accomodate all available page sizes, any number of images,
+and 0 or 1 texts.
+In practice, layouts only customize a limited number of images (ex 1::6), and
+let default handle the rest
+
+# Components
+
+## Theme
+Theme presents a small set of pretty designs to the user. It ties together
+all the other components into a scrapbook-style pretty pages.
+By default, only designs are presented to the users. Power users have an option to
+drill into details (frames, backgrounds, etc).
+Theme works in all page sizes, see FLEXIFILL
+
+## Designs
+Each page has a design. Design combines a layout, background, widgets, frames.
+Designs can use built-in layouts, or customize them.
+Design must accomodate all page sizes, see 1st law
+
+## Layouts
+Layouts position photos on the page. They must FLEXIFILL
+Layouts provide 'similar' layouts for different number of photos, with or without text.
+In practice, large number of images need not be similar, they can be handled by default layout.
+
+Layout combines similar rawlayouts together.
+Layouts can be displayed to the user.
+
+Useful:
+theme://admin@modern_full/layouts/horizontalLayout Example of full layout
+theme://admin@core/layouts/configLayout Use this to combine rawlayouts into layout
+theme://admin@core/layouts/gridLayout Default layout, handles any number of images
+theme://admin@core/layouts/gridSpacedLayout Like gridLayout, but with spacing
+
+## Rawlayouts
+
+RawLayouts are not required to FLEXIFILL. They can be limited to a fixed number of photos,
+but do have to handle different page sizes.
+
+They will provide same basic layout for different page sizes.
+
+## Backgrounds
+
+Useful:
+CSS backgrounds theme://admin@core/backgrounds/cssBackground
+
+## Frames
+
+Useful:
+CSS frame: theme://admin@core/backgrounds/cssFrame
+
+## Widgets
+
+Useful:
+PhotoWidget: theme://admin@core/widgets/photoWidget
 
 
-Unique identifiers:
-- every template object has a unique identifer that points to a json file
-
-def templateIdToFile(id)
-	type, user, typeId = id.split('-', 3)
-	raise "bad id" unless type && user && typeId
-	raise "bad type" unless type ~= /^(theme|book|layout|background|img)$/
-	raise "bad user" unless user ~= /^_*\w+$/
-	raise "bad type id" unless typeId ~= /^(\d|\w|_)+$/
-	File.join(SvegSettings.book_templates_dir, type, user, typeId + ".json")
-end
-
-
-Brainstorm:
-This week implementation:
-Create a book, with basic pages
-
-Walkthrough:
-Get a theme, display list of sizes, images
-Pick one, create the book:
-- each page gets the initial layout. How?
-How does layout generate html?
-Layout API:
-
-Layout decides:
-- what images are on the page
-- where to auto-place images
-- what editing controls are available for the image
-- size of the page
-
-The flow:
-layout->createPage(jsPage) -> fills in jsPage with layout html.
-what does layoutHtml looks like?
-we can't use any css for layoutHtml, all css is inlined
-<div class='page'> // css: width/height
-	<img src='/photo/2
-
-var LayoutMaster = {
-
-}
-
-var LayoutWrapper = function() {
-
-};

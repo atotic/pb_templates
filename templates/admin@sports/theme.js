@@ -11,7 +11,7 @@ function() {
 	});
 
 	// Photos
-	var soccerStadiumPhoto = new PB.TemplatePhoto( {
+	var soccerStadiumPhoto = PB.TemplatePhoto.create( {
 		id: 'admin@sports/soccerStadium',
 		iconUrl: '/t/admin@sports/soccer_stadium_icon.jpg',
 		originalUrl: '/t/admin@sports/soccer_stadium.jpg',
@@ -25,8 +25,17 @@ function() {
 		imageIds: {
 			$stadium: soccerStadiumPhoto.id
 		}
-
 	});
+
+	var soccerBallSvg = PB.TemplatePhoto.create({
+		id: 'admin@sports/photos/soccerBallSvg'
+	});
+	var soccerBallWidget = new (PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget').constructor)({
+			url: '/t/admin@sample/soccer_small.svg',
+			defaultWidth: 397,
+			defaultHeight: 266
+		});
+
 	var soccerStadiumImage = PB.ServerPhotoCache
 	var Theme = {
 		id: "admin@sports",
@@ -44,6 +53,10 @@ function() {
 		frames: {
 		},
 		widgets: {
+			soccerBallWidget: soccerBallWidget
+		},
+		photos: {
+			soccerStadium: soccerStadiumPhoto
 		}
 	};
 	return Theme;

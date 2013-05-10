@@ -156,38 +156,56 @@ function() {
 		}
 	}
 
-	var CssFrame = {
-		id: 'cssFrame',
-		fillFrame: function($div, frameOffset, frameData, options) {
-			frameData = $.extend({
+	var CssFrame = function( options ) {
+		this.options = $.extend(
+			{
 				css: {
 					backgroundColor: 'green',
 					boxShadow: '5px 5px 5px rgba(0,0,0,0.3)'
 				}
-			}, frameData);
-			$div.css(frameData.css);
+			}
+		, options);
+	};
+	CssFrame.prototype = {
+		constructor: CssFrame,
+		fillFrame: function($div, frameOffset, options, displayOptions) {
+			options = $.extend({}, this.options, options);
+			$div.css(options.css);
 		}
 	};
 
+
+	var photoWidgetPlaceholder = PB.TemplatePhoto.create( {
+		id: 'admin@core/photoWidgetDefault',
+		originalUrl: 'data:image/svg+xml;utf8,<?xml version="1.0" ?><svg xmlns="http://www.w3.org/2000/svg" height="100px" width="100px" version="1.1" y="0px" x="0px" overflow="visible" viewBox="0 0 100 100" ><rect width="100" height="100" fill="#F6EC43"/><text font-size="14"  transform="matrix(1 0 0 1 25 40)">Photo</text><text font-size="14" transform="matrix(1 0 0 1 25 60)">Widget</text></svg>',
+		width: 100,
+		height: 100
+	});
+
 	var PhotoWidget = function(options) {
 		this.options = $.extend( {
-			url: 'data:image/svg+xml;utf8,<?xml version="1.0" ?><svg xmlns="http://www.w3.org/2000/svg" height="100px" width="100px" version="1.1" y="0px" x="0px" overflow="visible" viewBox="0 0 100 100" ><rect width="100" height="100" fill="#F6EC43"/><text font-size="14"  transform="matrix(1 0 0 1 25 40)">Photo</text><text font-size="14" transform="matrix(1 0 0 1 25 60)">Widget</text></svg>',
-			defaultWidth: 100,
-			defaultHeight: 100
+			photoId: 'admin@core/photoWidgetDefault'
 		}, options);
 	};
 	PhotoWidget.prototype = {
-		prototype: PhotoWidget,
-		defaultWidth: function( widgetOptions ) {
-			return widgetOptions.defaultWidth || this.options.defaultWidth;
+		constructor: PhotoWidget,
+		photo: function(widgetOptions) {
+			return PB.TemplatePhoto.get( widgetOptions.photoId || this.options.photoId );
 		},
-		defaultHeight: function( widgetOptions ) {
-			return widgetOptions.defaultHeight || this.options.defaultHeight;
+		width: function( widgetOptions ) {
+			widgetOptions = $.extend({}, this.options, widgetOptions);
+			return widgetOptions.width || this.photo( widgetOptions ).width;
+		},
+		height: function( widgetOptions ) {
+			widgetOptions = $.extend({}, this.options, widgetOptions);
+			return widgetOptions.height || this.photo( widgetOptions ).height;
 		},
 		generateDom: function(width, height, widgetOptions, displayOptions) {
-			widgetOptions = $.extend({}, this.options, widgetOptions);
+			widgetOptions = $.extend({}, this.options, widgetOptions );
 			var dom = $('<img>')
-				.prop('src', widgetOptions.url);
+				.prop('src',
+					this.photo( widgetOptions ).getUrl( displayOptions ? displayOptions.resolution : null)
+					);
 			return dom;
 		}
 	}
@@ -204,10 +222,13 @@ function() {
 			cssBackground: new CssBackground()
 		},
 		frames: {
-			cssFrame: CssFrame
+			cssFrame: new CssFrame()
 		},
 		widgets: {
 			photoWidget: new PhotoWidget()
+		},
+		photos: {
+			photoWidgetPlaceholder: photoWidgetPlaceholder
 		}
 	 };
 	 return CoreTheme;
