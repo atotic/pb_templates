@@ -27,13 +27,11 @@ function() {
 		}
 	});
 
-	var soccerBallSvg = PB.TemplatePhoto.create({
-		id: 'admin@sports/photos/soccerBallSvg'
-	});
-	var soccerBallWidget = new (PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget').constructor)({
-			url: '/t/admin@sample/soccer_small.svg',
-			defaultWidth: 397,
-			defaultHeight: 266
+	var soccerBallWidget = PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget')
+		.create( {
+			originalUrl: '/t/admin@sports/soccer_ball_shaded.svg',
+			width: 700,
+			height: 550
 		});
 
 	var soccerStadiumImage = PB.ServerPhotoCache

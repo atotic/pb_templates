@@ -44,12 +44,11 @@ function() {
 		frames: {
 		},
 		widgets: {
-			soccerBall: PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget')
-				.constructor({
-					url: '/t/admin@sample/soccer_small.svg',
-					defaultWidth: 397,
-					defaultHeight: 266
-				}),
+			soccerBall: PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget').create({
+				originalUrl: '/t/admin@sample/soccer_small.svg',
+				width: 397,
+				height: 266
+			}),
 			eightBall: {}
 		}
 	};

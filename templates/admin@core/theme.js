@@ -177,7 +177,7 @@ function() {
 
 	var photoWidgetPlaceholder = PB.TemplatePhoto.create( {
 		id: 'admin@core/photoWidgetDefault',
-		originalUrl: 'data:image/svg+xml;utf8,<?xml version="1.0" ?><svg xmlns="http://www.w3.org/2000/svg" height="100px" width="100px" version="1.1" y="0px" x="0px" overflow="visible" viewBox="0 0 100 100" ><rect width="100" height="100" fill="#F6EC43"/><text font-size="14"  transform="matrix(1 0 0 1 25 40)">Photo</text><text font-size="14" transform="matrix(1 0 0 1 25 60)">Widget</text></svg>',
+		originalUrl: 'data:image/svg+xml;utf8,<?xml version="1.0" ?><svg xmlns="http://www.w3.org/2000/svg" height="100px" width="100px" version="1.1" y="0px" x="0px" viewBox="0 0 100 100" ><rect width="100" height="100" fill="#F6EC43"/><text font-size="14"  transform="matrix(1 0 0 1 25 40)">Photo</text><text font-size="14" transform="matrix(1 0 0 1 25 60)">Widget</text></svg>',
 		width: 100,
 		height: 100
 	});
@@ -187,8 +187,16 @@ function() {
 			photoId: 'admin@core/photoWidgetDefault'
 		}, options);
 	};
+
+	// Preferred way to create photo widgets
+	PhotoWidget.create = function(templatePhotoOptions) {
+		var photo = PB.TemplatePhoto.create( templatePhotoOptions );
+		return new PhotoWidget( {
+			photoId: photo.id
+		});
+	};
+
 	PhotoWidget.prototype = {
-		constructor: PhotoWidget,
 		photo: function(widgetOptions) {
 			return PB.TemplatePhoto.get( widgetOptions.photoId || this.options.photoId );
 		},
@@ -225,7 +233,7 @@ function() {
 			cssFrame: new CssFrame()
 		},
 		widgets: {
-			photoWidget: new PhotoWidget()
+			photoWidget: PhotoWidget
 		},
 		photos: {
 			photoWidgetPlaceholder: photoWidgetPlaceholder
