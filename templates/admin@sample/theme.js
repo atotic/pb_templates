@@ -10,9 +10,9 @@ function() {
 
 	FramedLayout.prototype = {
 		id: 'framedLayout',
-		getPageLayout: function(assetData, width, height, options) {
+		getPageLayout: function(page, options) {
 			options = $.extend({}, this.defaults, options);
-			var layout = PB.ThemeCache.resource('theme://admin@core/layouts/gridSpacedLayout').getPageLayout(assetData, width, height, options );
+			var layout = PB.ThemeCache.resource('theme://admin@core/layouts/gridSpacedLayout').getPageLayout(page, options );
 			var rotate = 5;
 			var frameOffset = PB.ThemeUtils.canonicalFrameWidth(options.frameWidth);
 			var applyFrame = function(asset) {

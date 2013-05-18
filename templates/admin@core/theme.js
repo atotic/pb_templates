@@ -1,7 +1,7 @@
 // Base Theme 'theme://admin@core/'
 function() {
 
-
+"use strict"
 /* sample config:
 	1: layout1,
 	2: layout2VV,
@@ -22,9 +22,10 @@ function() {
 
 	ConfigLayout.prototype = {
 		constructor: ConfigLayout,
-		getMatchingLayout: function(assetData, width, height, layoutOptions) {
-			var photoCount = PB.ThemeUtils.assetPhotoCount( assetData );
-			var textCount = PB.ThemeUtils.assetTextCount( assetData );
+		getMatchingLayout: function(page, layoutOptions) {
+			var assets = page.getAssets();
+			var photoCount = PB.ThemeUtils.assetPhotoCount( assets );
+			var textCount = PB.ThemeUtils.assetTextCount( assets );
 			var photoIndex = photoCount;
 			var textIndex = textCount ? photoIndex + "t" : null;
 			if (textIndex && textIndex in this.layouts)
@@ -33,9 +34,9 @@ function() {
 				return this.layouts[ photoIndex];
 			return this.layouts[ 'default' ];
 		},
-		getPageLayout: function(assetData, width, height, layoutOptions) {
-			var layout = this.getMatchingLayout( assetData, width, height, layoutOptions);
-			return layout.getPageLayout( assetData, width, height, layoutOptions );
+		getPageLayout: function(page, layoutOptions) {
+			var layout = this.getMatchingLayout( page, layoutOptions);
+			return layout.getPageLayout( page, layoutOptions );
 		}
 	}
 
@@ -47,17 +48,20 @@ function() {
 
 	GridLayout.prototype = {
 		constructor: GridLayout,
-		getPageLayout: function(assetData, width, height, layoutData) {
+		getPageLayout: function(page, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
-			width = Math.max(width - 2 * layoutData.inset, 0);
-			height = Math.max(height - 2 * layoutData.inset, 0);
+			var d = page.dimensions;
+			var assets = page.getAssets();
+
+			var width = Math.max(d.width - 2 * layoutData.inset, 0);
+			var height = Math.max(d.height - 2 * layoutData.inset, 0);
 			if (!width || width < 50 || !height || height < 50) {
-				console.error('getPageLayout width/height too small', width, height);
+				console.error('getPageLayout width/height too small', d.width, d.height);
 				return;
 			}
 			// Generate optimum tiles
-			var photoCount = PB.ThemeUtils.assetPhotoCount(assetData);
-			var textCount = PB.ThemeUtils.assetTextCount(assetData);
+			var photoCount = PB.ThemeUtils.assetPhotoCount(assets);
+			var textCount = PB.ThemeUtils.assetTextCount(assets);
 			var totalCount = photoCount + textCount;
 			var tileCountH = Math.round(Math.sqrt(totalCount * width / height));
 			var tileCountV = Math.ceil(totalCount / tileCountH);
@@ -96,9 +100,9 @@ function() {
 	}
 	GridSpacedLayout.prototype = {
 		constructor: GridSpacedLayout,
-		getPageLayout: function(assetData, width, height, layoutData) {
+		getPageLayout: function(page, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
-			var layout = CoreTheme.layouts.gridLayout.getPageLayout(assetData, width, height, $.extend({ inset: layoutData.spaceOffset}, layoutData));
+			var layout = CoreTheme.layouts.gridLayout.getPageLayout(page, $.extend({ inset: layoutData.spaceOffset}, layoutData));
 			var applyOffset = function( asset ) {
 				asset.top += layoutData.spaceOffset;
 				asset.left += layoutData.spaceOffset;
@@ -176,7 +180,7 @@ function() {
 
 
 	var photoWidgetPlaceholder = PB.TemplatePhoto.create( {
-		id: 'admin@core/photoWidgetDefault',
+		id: 'admin@core/photoWidgetPlaceholder',
 		originalUrl: 'data:image/svg+xml;utf8,<?xml version="1.0" ?><svg xmlns="http://www.w3.org/2000/svg" height="100px" width="100px" version="1.1" y="0px" x="0px" viewBox="0 0 100 100" ><rect width="100" height="100" fill="#F6EC43"/><text font-size="14"  transform="matrix(1 0 0 1 25 40)">Photo</text><text font-size="14" transform="matrix(1 0 0 1 25 60)">Widget</text></svg>',
 		width: 100,
 		height: 100
@@ -184,7 +188,7 @@ function() {
 
 	var PhotoWidget = function(options) {
 		this.options = $.extend( {
-			photoId: 'admin@core/photoWidgetDefault'
+			photoId: 'admin@core/photoWidgetPlaceholder'
 		}, options);
 	};
 

@@ -1,24 +1,26 @@
 function() {
 "use strict"
 
-	function lowerRightText(layout, assetData, width, height, options) {
-		if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-			var textWidth = Math.min( width, 350);
+	function lowerRightText(layout, page, options) {
+		var d = page.dimensions;
+		if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+			var textWidth = Math.min( d.width, 350);
 			var textHeight = 40;
 			layout.texts.push( {
-				top: height - textHeight - PB.ThemeUtils.gutter,
-				left: width - textWidth - PB.ThemeUtils.gutter,
+				top: d.height - textHeight - PB.ThemeUtils.gutter,
+				left: d.width - textWidth - PB.ThemeUtils.gutter,
 				width: textWidth,
 				height: textHeight
 			});
 		}
 	}
-	function lowerLeftText(layout, assetData, width, height, options) {
-		if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-			var textWidth = Math.min( width, 350);
+	function lowerLeftText(layout, page, options) {
+		var d = page.dimensions;
+		if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+			var textWidth = Math.min( d.width, 350);
 			var textHeight = 40;
 			layout.texts.push( {
-				top: height - textHeight - PB.ThemeUtils.gutter,
+				top: d.height - textHeight - PB.ThemeUtils.gutter,
 				left: PB.ThemeUtils.gutter,
 				width: textWidth,
 				height: textHeight
@@ -27,51 +29,55 @@ function() {
 	}
 	// Single page
 	var layout1 = {
-		getPageLayout: function(assetData, width, height, options) {
+		getPageLayout: function(page, options) {
+			var d = page.dimensions;
 			var layout = {
 				photos: [ {
-					top: 0, left: 0, width: width, height: height
+					top: 0, left: 0, width: d.width, height: d.height
 				}
 				],
 				texts: []
 			};
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 			return layout;
 		}
 	};
 	var layout2VV = {
-		getPageLayout: function(assetData, width, height, options) {
+		getPageLayout: function(page, options) {
+			var d = page.dimensions;
 			var layout = { photos: [], texts: [] };
-			var widthSegments = PB.ThemeUtils.segmentLine(width, 2);
+			var widthSegments = PB.ThemeUtils.segmentLine(d.width, 2);
 			for (var i =0; i<2; i++)
 				layout.photos.push( {
 					top:0, left: widthSegments[i],
 					width: widthSegments[ i+1 ] - widthSegments[i],
-					height: height
+					height: d.height
 				});
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 			return layout;
 		}
 	}
 
 	var layout2SV = {
-		getPageLayoutWide: function(assetData, width, height, options) {
+		getPageLayoutWide: function(page, options) {
+			var assets = page.getAssets();
+			var d = page.dimensions;
 			var layout = { photos: [], texts: [] };
 			layout.photos.push( {
 				top:0, left:0,
-				width: width - height,
-				height: height
+				width: d.width - d.height,
+				height: d.height
 			});
 			layout.photos.push( {
-				top: 0, left: width - height,
-				width: height,
-				height: height
+				top: 0, left: d.width - d.height,
+				width: d.height,
+				height: d.height
 			});
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 			return layout;
 		},
-		getPageLayout: function(assetData, width, height, options) {
-			return PB.ThemeUtils.layoutByAspect( assetData, width, height, options, {
+		getPageLayout: function(page, options) {
+			return PB.ThemeUtils.layoutByAspect( page, options, {
 				wide: this.getPageLayoutWide,
 				square: layout2VV.getPageLayout
 			});
@@ -79,33 +85,35 @@ function() {
 	}
 
 	var layout2HH = {
-		getPageLayout: function(assetData, width, height, options) {
+		getPageLayout: function(page, options) {
 			var layout = { photos: [], texts: [] };
-			var heightSegments = PB.ThemeUtils.segmentLine(height, 2);
+			var d = page.dimensions;
+			var heightSegments = PB.ThemeUtils.segmentLine(d.height, 2);
 			layout.photos.push( {
 				top: 0, left: 0,
-				width: width,
+				width: d.width,
 				height: heightSegments[1]
 			});
 			layout.photos.push( {
 				top: heightSegments[1],
 				left: 0,
-				width: width,
+				width: d.width,
 				height: heightSegments[2] - heightSegments[1]
 			});
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 			return layout;
 		}
 	}
 
 	var layout3HHH = {
-		getPageLayout: function( assetData, width, height, options ) {
+		getPageLayout: function( page, options ) {
 			var layout = { photos: [], texts:[] };
-			var widthSegments = PB.ThemeUtils.segmentLine( width, 2);
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+			var d = page.dimensions;
+			var widthSegments = PB.ThemeUtils.segmentLine( d.width, 2);
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
 			layout.photos.push( {
 				top: 0, left: 0,
-				width: width,
+				width: d.width,
 				height: heightSegments[1]
 			});
 			layout.photos.push( {
@@ -120,21 +128,22 @@ function() {
 				width: widthSegments[2] - widthSegments[1],
 				height: heightSegments[2] - heightSegments[1]
 			});
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 
 			return layout;
 		}
 	}
 
 	var layout3VHH = {
-		getPageLayoutSquare: function( assetData, width, height, options) {
+		getPageLayoutSquare: function( page, options) {
 			var layout = { photos:[], texts:[] }
-			var widthSegments = PB.ThemeUtils.segmentLine( width, 2);
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+			var d = page.dimensions;
+			var widthSegments = PB.ThemeUtils.segmentLine( d.width, 2);
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
 			layout.photos.push( {
 				top: 0, left: 0,
 				width: widthSegments[1],
-				height: height
+				height: d.height
 			});
 			layout.photos.push( {
 				top: 0, left: widthSegments[1],
@@ -146,30 +155,31 @@ function() {
 				width: widthSegments[2] - widthSegments[1],
 				height: heightSegments[2] - heightSegments[1]
 			});
-			lowerRightText( layout, assetData, width, height, options );
+			lowerRightText( layout, page, options );
 			return layout;
 		},
-		getPageLayoutWide: function( assetData, width, height, options ) {
+		getPageLayoutWide: function( page, options ) {
 			var layout = { photos:[], texts:[] }
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
-			var w1 = Math.round( height * 0.75 );
+			var d = page.dimensions;
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
+			var w1 = Math.round( d.height * 0.75 );
 			layout.photos.push( {
 				top: 0, left: 0,
-				width: w1, height: height
+				width: w1, height: d.height
 			});
 			layout.photos.push( {
 				top: 0, left: w1,
-				width: width - w1, height: heightSegments[1]
+				width: d.width - w1, height: heightSegments[1]
 			});
 			layout.photos.push( {
 				top: heightSegments[1], left: w1,
-				width: width - w1, height: heightSegments[2] - heightSegments[1]
+				width: d.width - w1, height: heightSegments[2] - heightSegments[1]
 			});
-			lowerRightText( layout, assetData, width, height, options );
+			lowerRightText( layout, page, options );
 			return layout;
 		},
-		getPageLayout: function( assetData, width, height, options) {
-			return PB.ThemeUtils.layoutByAspect( assetData, width, height, options, {
+		getPageLayout: function( page, options) {
+			return PB.ThemeUtils.layoutByAspect( page, options, {
 				wide: this.getPageLayoutWide,
 				square: this.getPageLayoutSquare
 			});
@@ -177,26 +187,27 @@ function() {
 	}
 
 	var layout3SVV = {
-		getPageLayoutWide: function( assetData, width, height, options) {
+		getPageLayoutWide: function( page, options) {
 			var layout = { photos:[], texts:[] }
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+			var d = page.dimensions;
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
 			layout.photos.push( {
 				top: 0, left: 0,
-				width: height, height: height
+				width: d.height, height: d.height
 			});
 			layout.photos.push( {
-				top: 0, left: height,
-				width: width - height, height: heightSegments[1]
+				top: 0, left: d.height,
+				width: d.width - d.height, height: heightSegments[1]
 			});
 			layout.photos.push( {
-				top: heightSegments[1], left: height,
-				width: width - height, height: heightSegments[2] - heightSegments[1]
+				top: heightSegments[1], left: d.height,
+				width: d.width - d.height, height: heightSegments[2] - heightSegments[1]
 			});
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 			return layout;
 		},
-		getPageLayout: function( assetData, width, height, options) {
-			return PB.ThemeUtils.layoutByAspect( assetData, width, height, options, {
+		getPageLayout: function( page, options) {
+			return PB.ThemeUtils.layoutByAspect( page, options, {
 				wide: this.getPageLayoutWide,
 				square: layout3VHH.getPageLayoutWide
 			});
@@ -204,10 +215,11 @@ function() {
 	}
 
 	var layout4HHHH = {
-		getPageLayout: function( assetData, width, height, options) {
+		getPageLayout: function( page, options) {
 			var layout = { photos: [], texts:[] };
-			var widthSegments = PB.ThemeUtils.segmentLine( width, 2);
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+			var d = page.dimensions;
+			var widthSegments = PB.ThemeUtils.segmentLine( d.width, 2);
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
 			for (var v=0; v<2; v++)
 				for (var h=0; h<2; h++) {
 					layout.photos.push( {
@@ -217,37 +229,40 @@ function() {
 						height: heightSegments[v+1] - heightSegments[v]
 					});
 				}
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 			return layout;
 		}
 	}
 
 	var layout4sHHs = {
-		getPageLayoutWide: function( assetData, width, height, options) {
+		getPageLayoutWide: function( page, options) {
 			var layout = { photos: [], texts:[] };
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+			var d = page.dimensions;
+
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
 			layout.photos.push( {
 				top: 0, left: 0,
 				width: heightSegments[1], height: heightSegments[1]
 			});
 			layout.photos.push( {
 				top: 0, left: heightSegments[1],
-				width: width - heightSegments[1], height: heightSegments[1]
+				width: d.width - heightSegments[1], height: heightSegments[1]
 			});
 			layout.photos.push( {
 				top: heightSegments[1], left: 0,
-				width: width - heightSegments[1], height: heightSegments[2] - heightSegments[1]
+				width: d.width - heightSegments[1], height: heightSegments[2] - heightSegments[1]
 			});
 			layout.photos.push( {
-				top: heightSegments[1], left: width - heightSegments[1],
+				top: heightSegments[1], left: d.width - heightSegments[1],
 				width: heightSegments[1], height: heightSegments[2] - heightSegments[1]
 			});
-			lowerLeftText(layout, assetData, width, height, options);
+			lowerLeftText(layout, page, options);
 			return layout;
 		},
-		getPageLayoutSquare: function( assetData, width, height, options) {
+		getPageLayoutSquare: function( page, options) {
 			var layout = { photos: [], texts:[] };
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 2);
+			var d = page.dimensions;
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 2);
 			var w1 = Math.round( heightSegments[1] * 3 / 4);
 			layout.photos.push( {
 				top: 0, left: 0,
@@ -255,35 +270,36 @@ function() {
 			});
 			layout.photos.push( {
 				top: 0, left: w1,
-				width: width - w1, height: heightSegments[1]
+				width: d.width - w1, height: heightSegments[1]
 			});
 			w1 = Math.round( (heightSegments[2] - heightSegments[1]) * 3 / 4 );
 			layout.photos.push( {
 				top: heightSegments[1], left: 0,
-				width: width - w1, height: heightSegments[2] - heightSegments[1]
+				width: d.width - w1, height: heightSegments[2] - heightSegments[1]
 			});
 			layout.photos.push( {
-				top: heightSegments[1], left: width - w1,
+				top: heightSegments[1], left: d.width - w1,
 				width: w1, height: heightSegments[2] - heightSegments[1]
 			});
-			lowerLeftText(layout, assetData, width, height, options);
+			lowerLeftText(layout, page, options);
 			return layout;
 		},
-		getPageLayout: function( assetData, width, height, options) {
-			return PB.ThemeUtils.layoutByAspect( assetData, width, height, options, {
+		getPageLayout: function( page, options) {
+			return PB.ThemeUtils.layoutByAspect( page, options, {
 				wide: this.getPageLayoutWide,
 				square: this.getPageLayoutSquare
 			});
 		}
 	}
 	var layout5Hssss = {
-		getPageLayout: function( assetData, width, height, options ) {
+		getPageLayout: function( page, options ) {
 			var layout = { photos: [], texts: [] };
-			var widthSegments = PB.ThemeUtils.segmentLine( width, 4 );
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 3 );
+			var d = page.dimensions;
+			var widthSegments = PB.ThemeUtils.segmentLine( d.width, 4 );
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 3 );
 			layout.photos.push( {
 				top: 0, left: 0,
-				width: width, height: heightSegments[2]
+				width: d.width, height: heightSegments[2]
 			});
 			for (var i=0; i < 4; i++)
 				layout.photos.push( {
@@ -292,12 +308,12 @@ function() {
 					width: widthSegments[ i+1] - widthSegments[i],
 					height: heightSegments[3] - heightSegments[2]
 				});
-			if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 ) {
-				var textWidth = Math.min( width, 350);
+			if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+				var textWidth = Math.min( d.width, 350);
 				var textHeight = 40;
 				layout.texts.push( {
 					top: PB.ThemeUtils.gutter + 20,
-					left: width - textWidth - PB.ThemeUtils.gutter,
+					left: d.width - textWidth - PB.ThemeUtils.gutter,
 					width: textWidth,
 					height: textHeight
 				});
@@ -307,44 +323,49 @@ function() {
 	}
 
 	var layout5Vhhhh = {
-		getPageLayout: function( assetData, width, height, options ) {
+		getPageLayout: function( page, options ) {
 			var layout = { photos: [], texts: [] };
-			var w1 = Math.round( width * 3 / 4 );
-			var heightSegments = PB.ThemeUtils.segmentLine( height, 4 );
+			var d = page.dimensions;
+			var w1 = Math.round( d.width * 3 / 4 );
+			var heightSegments = PB.ThemeUtils.segmentLine( d.height, 4 );
 
 			layout.photos.push( {
 				top: 0, left: 0,
-				width: w1, height: height
+				width: w1, height: d.height
 			});
 			for (var i=0; i < 4; i++)
 				layout.photos.push( {
 					top: heightSegments[i],
 					left: w1,
-					width: width - w1,
+					width: d.width - w1,
 					height: heightSegments[i+1] - heightSegments[i]
 				});
-			if ( PB.ThemeUtils.assetTextCount( assetData ) > 0 )
-				lowerLeftText(layout, assetData, width, height, options);
+			lowerLeftText(layout, page, options);
 			return layout;
 		}
 	}
 
 	var defaultLayout = {
 		gridLayout: PB.ThemeCache.resource('theme://admin@core/layouts/gridLayout'),
-		getPageLayout: function(assetData, width, height, options) {
-			var myAssetData = {};
+		getPageLayout: function( page, options) {
+			var assets = page.getAssets();
+			var d = page.dimensions;
+			var myAssets = {};
 
-			for (var p in assetData)
-				if (assetData[p].type === 'photo')
-					myAssetData[p] = { type: 'photo' };
+			for (var p in assets)
+				if (assets[p].type === 'photo')
+					myAssets[p] = { type: 'photo' };
 
-			var layout = this.gridLayout.getPageLayout(myAssetData, width, height, options);
+			var layout = this.gridLayout.getPageLayout(
+					PB.ThemeUtils.layoutMockupPage(myAssets, d),
+					options
+				);
 			if (layout.photos.length > 0) {
 				var lastAsset = layout.photos[ layout.photos.length - 1];
-				if (lastAsset.left + lastAsset.width < width)
-					lastAsset.width = width - lastAsset.left;
+				if (lastAsset.left + lastAsset.width < d.width)
+					lastAsset.width = d.width - lastAsset.left;
 			}
-			lowerRightText(layout, assetData, width, height, options);
+			lowerRightText(layout, page, options);
 
 			return layout;
 		}
