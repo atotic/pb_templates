@@ -371,8 +371,8 @@ function() {
 		}
 	}
 
-	var configLayout = PB.ThemeCache.resource( 'theme://admin@core/layouts/configLayout');
-	var horizontalLayout = new configLayout.constructor(
+	var configLayout = PB.ThemeCache.resource( 'theme://admin@core/creators/configLayout');
+	var horizontalLayout = configLayout.create(
 	{
 		1: layout1,
 		2: layout2HH,
@@ -381,7 +381,7 @@ function() {
 		5: layout5Hssss,
 		'default': defaultLayout
 	});
-	var verticalLayout = new configLayout.constructor(
+	var verticalLayout = configLayout.create(
 	{
 		1: layout1,
 		2: layout2VV,

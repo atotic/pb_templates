@@ -1,14 +1,13 @@
 function() {
 "use strict"
 
-	var cssBackground = PB.ThemeCache.resource('theme://admin@core/backgrounds/cssBackground');
-
-	var soccerFieldBackground = new cssBackground.constructor( {
-		css: {
-			backgroundImage: "url(/t/admin@sports/soccer_field.svg)",
-			backgroundSize: '100% 100%'
-		}
-	});
+	var soccerFieldBackground = PB.ThemeCache.resource('theme://admin@core/creators/cssBackground')
+		.create( {
+			css: {
+				backgroundImage: "url(/t/admin@sports/soccer_field.svg)",
+				backgroundSize: '100% 100%'
+			}
+		});
 
 	// Photos
 	var soccerStadiumPhoto = PB.TemplatePhoto.create( {
@@ -16,29 +15,30 @@ function() {
 		originalUrl: '/t/admin@sports/soccer_stadium.jpg',
 	});
 
-	var soccerStadiumBackground = new cssBackground.constructor( {
-		css: {
-			backgroundImage: "url($stadium)",
-			backgroundSize: '100% 100%'
-		},
-		imageIds: {
-			$stadium: soccerStadiumPhoto.id
-		}
-	});
+	var soccerStadiumBackground = PB.ThemeCache.resource('theme://admin@core/creators/cssBackground')
+		.create( {
+			css: {
+				backgroundImage: "url($stadium)",
+				backgroundSize: '100% 100%'
+			},
+			imageIds: {
+				$stadium: soccerStadiumPhoto.id
+			}
+		});
 
-	var soccerBallWidget = PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget')
+	var soccerBallWidget = PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_ball_shaded.svg',
 			width: 700,
 			height: 550
 		});
-	var soccerSilhouetteWidget = PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget')
+	var soccerSilhouetteWidget = PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_silhouette.svg',
 			width: 108,
 			height: 227
 		});
-	var soccerBallFlaming = PB.ThemeCache.resource('theme://admin@core/widgets/photoWidget')
+	var soccerBallFlaming = PB.ThemeCache.resource('theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_ball_flaming.svg',
 			width: 646,

@@ -20,8 +20,11 @@ function() {
 			console.warn("ConfigLayout has no default", config);
 	}
 
+	ConfigLayout.create = function(config) {
+		return new ConfigLayout(config);
+	}
+
 	ConfigLayout.prototype = {
-		constructor: ConfigLayout,
 		getMatchingLayout: function(page, layoutOptions) {
 			var assets = page.getAssets();
 			var photoCount = PB.ThemeUtils.assetPhotoCount( assets );
@@ -46,8 +49,11 @@ function() {
 		}, defaults );
 	}
 
+	GridLayout.create = function(defaults) {
+		return new GridLayout(defaults);
+	}
+
 	GridLayout.prototype = {
-		constructor: GridLayout,
 		getPageLayout: function(page, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
 			var d = page.dimensions;
@@ -98,8 +104,12 @@ function() {
 			spaceOffset: 0
 		}, defaults );
 	}
+
+	GridSpacedLayout.create = function(defaults) {
+		return new GridSpacedLayout();
+	}
+
 	GridSpacedLayout.prototype = {
-		constructor: GridSpacedLayout,
 		getPageLayout: function(page, layoutData) {
 			layoutData = $.extend( {}, this.defaults, layoutData );
 			var layout = CoreTheme.layouts.gridLayout.getPageLayout(page, $.extend({ inset: layoutData.spaceOffset}, layoutData));
@@ -129,8 +139,11 @@ function() {
 		}
 	}
 
+	CssBackground.create = function(defaultCss) {
+		return new CssBackground( defaultCss );
+	}
+
 	CssBackground.prototype = {
-		constructor: CssBackground,
 		fillBackground: function( $div, backgroundData, options) {
 			options = $.extend( {}, {
 				resolution: PB.PhotoProxy.LARGE
@@ -170,8 +183,12 @@ function() {
 			}
 		, options);
 	};
+
+	CssFrame.create = function( options ) {
+		return new CssFrame( options );
+	}
+
 	CssFrame.prototype = {
-		constructor: CssFrame,
 		fillFrame: function($div, frameOffset, options, displayOptions) {
 			options = $.extend({}, this.options, options);
 			$div.css(options.css);
@@ -226,7 +243,6 @@ function() {
 	var CoreTheme = {
 		id: 'admin@core',
 		layouts: {
-			configLayout : new ConfigLayout(),
 			gridLayout : new GridLayout(),
 			gridSpacedLayout : new GridSpacedLayout()
 		},
@@ -237,10 +253,18 @@ function() {
 			cssFrame: new CssFrame()
 		},
 		widgets: {
-			photoWidget: PhotoWidget
+			photoWidget: new PhotoWidget()
 		},
 		photos: {
 			photoWidgetPlaceholder: photoWidgetPlaceholder
+		},
+		creators: {
+			photoWidget: PhotoWidget,
+			configLayout: ConfigLayout,
+			gridLayout: GridLayout,
+			gridSpacedLayout: GridSpacedLayout,
+			cssBackground: CssBackground,
+			cssFrame: CssFrame
 		}
 	 };
 	 return CoreTheme;

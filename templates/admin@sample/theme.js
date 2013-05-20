@@ -44,7 +44,7 @@ function() {
 		frames: {
 		},
 		widgets: {
-			soccerBall: PB.ThemeCache.resource( 'theme://admin@core/widgets/photoWidget').create({
+			soccerBall: PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget').create({
 				originalUrl: '/t/admin@sample/soccer_small.svg',
 				width: 397,
 				height: 266

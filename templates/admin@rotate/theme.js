@@ -91,14 +91,11 @@ function() {
 		}
 	}
 
-	var configLayout = PB.ThemeCache.resource( 'theme://admin@core/layouts/configLayout');
-
-	var horizontalLayout = new configLayout.constructor(
-	{
-		1: layout1H,
-		'default': defaultLayout
-	}
-	);
+	var horizontalLayout = PB.ThemeCache.resource( 'theme://admin@core/creators/configLayout')
+		.create( {
+			1: layout1H,
+			'default': defaultLayout
+		});
 
 	var Theme = {
 		id: "admin@rotate",
