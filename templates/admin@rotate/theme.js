@@ -97,6 +97,27 @@ function() {
 			'default': defaultLayout
 		});
 
+	var defaultVertical = {
+		layout: PB.ThemeCache.resource('theme://admin@modern_full/layouts/verticalLayout'),
+		getPageLayout: function( page, options ) {
+			var layout = this.layout.getPageLayout( page, options);
+			var rotations = [1, -2, 2, -1, 3, 1, -2];
+			var inset = 30;
+			for (var i=0; i< layout.photos.length; i++) {
+				layout.photos[i].top += inset;
+				layout.photos[i].left += inset;
+				layout.photos[i].width -= inset * 2;
+				layout.photos[i].height -= inset * 2;
+				layout.photos[i].rotate = rotations[i % rotations.length ];
+			}
+			return layout;
+		}
+	}
+	var verticalLayout = PB.ThemeCache.resource( 'theme://admin@core/creators/configLayout')
+		.create( {
+			'default' : defaultVertical
+		});
+
 	var Theme = {
 		id: "admin@rotate",
 		title: "Rotated layouts",
@@ -105,7 +126,8 @@ function() {
 		designs: {
 		},
 		layouts: {
-			horizontalLayout: horizontalLayout
+			horizontalLayout: horizontalLayout,
+			verticalLayout: verticalLayout
 		},
 		rawlayouts: {
 			layout1H: layout1H
