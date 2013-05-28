@@ -13,8 +13,7 @@ namespace :image do
 		puts args.filename
 
 		src = File.expand_path(args.filename)
-		ext = File.extname(src)
-		ext = ext.downcase
+		ext = File.extname(src).downcase
 
 		basename = File.basename(src, ext)
 		dirname = File.dirname(src)
@@ -36,5 +35,19 @@ namespace :image do
 
 		success = Kernel.system cmd_line
 		raise("Photo resize failed" + $?.to_s) unless success
+	end
+	desc "Optimizes svg"
+	task :optimize_svg, [:filename] => :environment do | t, args |
+		src = File.expand_path(args.filename)
+		ext = File.extname(src).downcase
+
+		basename = File.basename(src, ext)
+		dirname = File.dirname(src)
+		filename = "#{basename}_optimized#{ext}"
+		dest = "#{dirname}/#{filename}"
+		cmd_line = "/usr/bin/python /Users/atotic/bin/scour/scour.py -i #{src} -o #{dest}"
+		success = Kernel.system cmd_line
+		raise("Optimize svg failed" + $?.to_s) unless success
+		puts "Optimized to #{dest}"
 	end
 end
