@@ -1,4 +1,5 @@
 function() {
+// admin@sports theme
 "use strict"
 
 	// SOCCER
@@ -11,7 +12,6 @@ function() {
 			}
 		});
 
-	// Photos
 	var soccerStadiumPhoto = PB.TemplatePhoto.create( {
 		iconUrl: '/t/admin@sports/soccer_stadium_icon.jpg',
 		originalUrl: '/t/admin@sports/soccer_stadium.jpg',
@@ -40,12 +40,21 @@ function() {
 			width: 108,
 			height: 227
 		});
-	var soccerBallFlaming = PB.ThemeCache.resource('theme://admin@core/creators/photoWidget')
+	var soccerBallFlamingWidget = PB.ThemeCache.resource('theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_ball_flaming.svg',
 			width: 646,
 			height: 416
 		});
+
+	var soccerGreenFrame = PB.ThemeCache.resource('theme://admin@core/creators/cssFrame')
+		.create( {
+			css: {
+				backgroundColor: "#73FA79",
+			},
+			inset: [5,5,5,5]
+		});
+
 	var soccerDesign1 =  {
 		id: 'theme://admin@sports/designs/soccerDesign1',
 		layoutTemplate: PB.ThemeCache.resource('theme://admin@rotate/layouts/horizontalLayout'),
@@ -96,6 +105,11 @@ function() {
 		getPageLayout: function( page, layoutData ) {
 			var assets = page.getAssets();
  			var layout = soccerDesign1.layoutTemplate.getPageLayout( page, layoutData );
+ 			// Add frames
+ 			layout.photos.forEach(function(asset) {
+ 				asset.frameId = 'theme://admin@sports/frames/soccerGreen'
+ 			});
+ 			// Position widgets
  			var top = 0;
  			var left = 0;
  			layout.widgets = [];
@@ -158,6 +172,23 @@ function() {
 			width: 224,
 			height: 465
 		});
+	var basketballOrangeFrame = PB.ThemeCache.resource('theme://admin@core/creators/cssFrame')
+		.create( {
+			css: {
+				backgroundColor: "#FF9300"
+			},
+			inset: [10,10,10,10]
+		});
+
+	var purpleFrame = PB.ThemeCache.resource('theme://admin@core/creators/cssFrame')
+		.create( {
+			css: {
+					backgroundColor: '#9400d3',
+					boxShadow: '5px 5px 5px rgba(148,0,211,0.3)'
+			},
+			inset: [1,1,1,1]
+		});
+
 	var basketballDesign1 =  {
 		id: 'theme://admin@sports/designs/basketballDesign1',
 		layoutTemplate: PB.ThemeCache.resource('theme://admin@rotate/layouts/verticalLayout'),
@@ -225,6 +256,11 @@ function() {
  		getPageLayout: function( page, layoutData ) {
  			var assets = page.getAssets();
  			var layout = this.layoutTemplate.getPageLayout( page, layoutData );
+ 			// frames
+ 			layout.photos.forEach( function(asset) {
+ 				asset.frameId = 'theme://admin@sports/frames/basketballOrange';
+ 			});
+ 			// widgets
 			var top = 0;
  			var left = 0;
  			layout.widgets = [];
@@ -284,11 +320,14 @@ function() {
 			basketballHoopBackground: basketballHoopBackground
 		},
 		frames: {
+			soccerGreen: soccerGreenFrame,
+			basketballOrange: basketballOrangeFrame,
+			purple: purpleFrame
 		},
 		widgets: {
 			soccerBallWidget: soccerBallWidget,
 			soccerSilhouetteWidget: soccerSilhouetteWidget,
-			soccerBallFlaming: soccerBallFlaming,
+			soccerBallFlaming: soccerBallFlamingWidget,
 			basketball: basketballWidget,
 			basketballNet: basketballNetWidget,
 			basketballOutline: basketballOutlineWidget

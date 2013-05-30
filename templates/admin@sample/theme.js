@@ -18,10 +18,11 @@ function() {
 			var applyFrame = function(asset) {
 				asset.rotate = rotate;
 				rotate += 20;
-				asset.frameId =
 				asset.frameId = 'theme://admin@core/frames/cssFrame';
-				asset.frameOffset = frameOffset;
-				asset.frameData = { backgroundColor: 'red'}
+				asset.frameData = {
+					css: { backgroundColor: 'red'},
+					inset: [options.frameWidth, options.frameWidth, options.frameWidth, options.frameWidth]
+				}
 			}
 			layout.photos.forEach( applyFrame );
 			layout.texts.forEach( applyFrame );

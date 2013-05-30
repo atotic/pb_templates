@@ -179,7 +179,8 @@ function() {
 				css: {
 					backgroundColor: 'green',
 					boxShadow: '5px 5px 5px rgba(0,0,0,0.3)'
-				}
+				},
+				inset: [10,10,10,10]
 			}
 		, options);
 	};
@@ -189,7 +190,10 @@ function() {
 	}
 
 	CssFrame.prototype = {
-		fillFrame: function($div, frameOffset, options, displayOptions) {
+		getInset: function(options) {
+			return ( options && options.inset) || this.options.inset;
+		},
+		fillFrame: function($div, options, displayOptions) {
 			options = $.extend({}, this.options, options);
 			$div.css(options.css);
 		}
@@ -234,7 +238,11 @@ function() {
 			var dom = $('<img>')
 				.prop('src',
 					this.photo( widgetOptions ).getUrl( displayOptions ? displayOptions.resolution : null)
-					);
+					)
+				.css({
+					width: width,
+					height: height
+				});
 			return dom;
 		}
 	}
