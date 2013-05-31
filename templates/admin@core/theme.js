@@ -247,7 +247,21 @@ function() {
 		}
 	}
 
-
+	var inBottomLeftPositioner = {
+		getPosition: function( page, childAssetId ) {
+			var child = page.getAsset( childAssetId );
+			var parent = page.getAsset( child.childOf.assetId );
+			// TODO measure text wodth, height
+			var width = Math.min( 200, parent.css.width);
+			var height = 30;
+			return {
+				top: parent.css.top + parent.css.height - height,
+				height: height,
+				left: parent.css.left,
+				width: width
+			};
+		}
+	};
 	var CoreTheme = {
 		id: 'admin@core',
 		layouts: {
@@ -263,9 +277,6 @@ function() {
 		widgets: {
 			photoWidget: new PhotoWidget()
 		},
-		photos: {
-			photoWidgetPlaceholder: photoWidgetPlaceholder
-		},
 		creators: {
 			photoWidget: PhotoWidget,
 			configLayout: ConfigLayout,
@@ -273,6 +284,10 @@ function() {
 			gridSpacedLayout: GridSpacedLayout,
 			cssBackground: CssBackground,
 			cssFrame: CssFrame
+		},
+		positioners: {
+			default: inBottomLeftPositioner,
+			inBottomCenter: inBottomLeftPositioner
 		}
 	 };
 	 return CoreTheme;
