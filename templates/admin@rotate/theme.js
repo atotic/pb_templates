@@ -7,7 +7,7 @@ function() {
 	var textMargin = 16;
 
 	function centerText(layout, page, options) {
-		if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+		if ( PB.ThemeUtils.countAssets( page.getAssets(), 'text' ) > 0 ) {
 			var d = page.dimensions;
 			var myWidth = Math.min( d.width, textWidth);
 			layout.texts.push( {
@@ -23,7 +23,7 @@ function() {
 		getPageLayout: function(page, options) {
 			var d = page.dimensions;
 
-			var hasText = PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0;
+			var hasText = PB.ThemeUtils.countAssets( page.getAssets(), 'text' ) > 0;
 			var bottomInset = hasText ? inset + textHeight + textMargin: inset;
 			var photoWidth = d.width - 2 * inset;
 			var photoHeight = photoWidth * 3 / 4;
@@ -77,7 +77,7 @@ function() {
 			for (var p in assets)
 				if (assets[p].type === 'photo')
 					myAssets[p] = { type: 'photo' };
-			var hasText = PB.ThemeUtils.assetTextCount( assets ) > 0;
+			var hasText = PB.ThemeUtils.countAssets( assets, 'text' ) > 0;
 			var myHeight = hasText ? d.height - textHeight - inset: d.height;
 			var layout = this.gridLayout.getPageLayout(
 					PB.ThemeUtils.layoutMockupPage( myAssets, {width: d.width, height: myHeight}),

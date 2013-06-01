@@ -3,7 +3,7 @@ function() {
 
 	function lowerRightText(layout, page, options) {
 		var d = page.dimensions;
-		if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+		if ( PB.ThemeUtils.countAssets( page.getAssets(), 'text' ) > 0 ) {
 			var textWidth = Math.min( d.width, 350);
 			var textHeight = 40;
 			layout.texts.push( {
@@ -16,7 +16,7 @@ function() {
 	}
 	function lowerLeftText(layout, page, options) {
 		var d = page.dimensions;
-		if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+		if ( PB.ThemeUtils.countAssets( page.getAssets(), 'text' ) > 0 ) {
 			var textWidth = Math.min( d.width, 350);
 			var textHeight = 40;
 			layout.texts.push( {
@@ -308,7 +308,7 @@ function() {
 					width: widthSegments[ i+1] - widthSegments[i],
 					height: heightSegments[3] - heightSegments[2]
 				});
-			if ( PB.ThemeUtils.assetTextCount( page.getAssets() ) > 0 ) {
+			if ( PB.ThemeUtils.countAssets( page.getAssets(), 'text') > 0 ) {
 				var textWidth = Math.min( d.width, 350);
 				var textHeight = 40;
 				layout.texts.push( {

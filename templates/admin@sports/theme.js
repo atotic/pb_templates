@@ -84,7 +84,7 @@ function() {
  			return 'theme://admin@sports/backgrounds/soccerField';
  		},
  		getWidgets: function(page) {
- 			var photoCount = PB.ThemeUtils.assetPhotoCount( page.getAssets() );
+ 			var photoCount = PB.ThemeUtils.countAssets( page.getAssets(), 'photo');
 			var widgetList = [
  				{ id: 'theme://admin@sports/widgets/soccerBallWidget',
  					options: { width: 70, height: 55}
@@ -218,7 +218,7 @@ function() {
  			return 'theme://admin@sports/backgrounds/basketballBackground1';
  		},
  		getWidgets: function(page) {
- 			var photoCount = PB.ThemeUtils.assetPhotoCount( page.getAssets() );
+ 			var photoCount = PB.ThemeUtils.countAssets( page.getAssets(), 'photo');
 			var widgetList = [
  				{ id: 'theme://admin@sports/widgets/basketball',
  					options: { width: 121 * 0.8, height: 143 * 0.8}
@@ -284,7 +284,7 @@ function() {
  			return 'theme://admin@sports/backgrounds/basketballHoopBackground';
  		},
  		getWidgets: function(page) {
- 			var photoCount = PB.ThemeUtils.assetPhotoCount( page.getAssets() );
+ 			var photoCount = PB.ThemeUtils.countAssets( page.getAssets(), 'photo');
 			var widgetList = [
  				{ id: 'theme://admin@sports/widgets/basketball',
  					options: { width: 121 * 0.8, height: 143 * 0.8}

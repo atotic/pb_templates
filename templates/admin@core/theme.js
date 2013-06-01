@@ -27,8 +27,8 @@ function() {
 	ConfigLayout.prototype = {
 		getMatchingLayout: function(page, layoutOptions) {
 			var assets = page.getAssets();
-			var photoCount = PB.ThemeUtils.assetPhotoCount( assets );
-			var textCount = PB.ThemeUtils.assetTextCount( assets );
+			var photoCount = PB.ThemeUtils.countAssets( assets, 'photo' );
+			var textCount = PB.ThemeUtils.countAssets( assets, 'text' );
 			var photoIndex = photoCount;
 			var textIndex = textCount ? photoIndex + "t" : null;
 			if (textIndex && textIndex in this.layouts)
@@ -66,8 +66,8 @@ function() {
 				return;
 			}
 			// Generate optimum tiles
-			var photoCount = PB.ThemeUtils.assetPhotoCount(assets);
-			var textCount = PB.ThemeUtils.assetTextCount(assets);
+			var photoCount = PB.ThemeUtils.countAssets(assets, 'photo');
+			var textCount = PB.ThemeUtils.countAssets(assets, 'text');
 			var totalCount = photoCount + textCount;
 			var tileCountH = Math.round(Math.sqrt(totalCount * width / height));
 			var tileCountV = Math.ceil(totalCount / tileCountH);
