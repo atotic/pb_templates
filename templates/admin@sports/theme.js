@@ -31,20 +31,20 @@ function() {
 	var soccerBallWidget = PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_ball_shaded.svg',
-			width: 700,
-			height: 550
+			width: 70,
+			height: 55
 		});
 	var soccerSilhouetteWidget = PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_silhouette.svg',
-			width: 108,
-			height: 227
+			width: 54,
+			height: 113
 		});
 	var soccerBallFlamingWidget = PB.ThemeCache.resource('theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/soccer_ball_flaming.svg',
-			width: 646,
-			height: 416
+			width: 128,
+			height: 82
 		});
 
 	var soccerGreenFrame = PB.ThemeCache.resource('theme://admin@core/creators/cssFrame')
@@ -163,14 +163,14 @@ function() {
 	var basketballNetWidget = PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/basketball_net.svg',
-			width: 635,
-			height: 741
+			width: 158,
+			height: 185
 		});
 	var basketballOutlineWidget = PB.ThemeCache.resource( 'theme://admin@core/creators/photoWidget')
 		.create( {
 			originalUrl: '/t/admin@sports/basketball_outline.svg',
-			width: 224,
-			height: 465
+			width: 112,
+			height: 232
 		});
 	var basketballOrangeFrame = PB.ThemeCache.resource('theme://admin@core/creators/cssFrame')
 		.create( {
@@ -236,7 +236,7 @@ function() {
 
 	var basketballHoopPix = PB.TemplatePhoto.create( {
 		originalUrl: '/t/admin@sports/basketball_hoop_back.jpg',
-		iconUrl: '/t/admin@sports/basketball_court_hoop_back_icon.jpg'
+		iconUrl: '/t/admin@sports/basketball_hoop_back_icon.jpg'
 	});
 
 	var basketballHoopBackground = PB.ThemeCache.resource('theme://admin@core/creators/cssBackground')

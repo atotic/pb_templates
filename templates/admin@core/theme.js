@@ -248,9 +248,9 @@ function() {
 	}
 
 	var inBottomLeftPositioner = {
-		getPosition: function( page, childAssetId ) {
-			var child = page.getAsset( childAssetId );
-			var parent = page.getAsset( child.childOf.assetId );
+		getPosition: function( page, dependentAssetId ) {
+			var dependent = page.getAsset( dependentAssetId );
+			var parent = page.getAsset( dependent.dependentOf.assetId );
 			// TODO measure text wodth, height
 			var width = Math.min( 200, parent.css.width);
 			var height = 30;
