@@ -149,6 +149,7 @@ function() {
 				resolution: PB.PhotoProxy.LARGE
 			}, options);
 			backgroundData = $.extend( {}, this.defaultCss, backgroundData );
+			backgroundData.css = $.extend( {}, backgroundData.css );
 			if (backgroundData.css.backgroundImage) {
 				var defaultSize = 'original';
 				var match = backgroundData.css.backgroundImage.match(/(\$[\w]+)/g);
