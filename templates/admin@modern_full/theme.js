@@ -391,6 +391,69 @@ function() {
 		'default': defaultLayout
 	});
 
+	var whiteBackground = PB.ThemeCache.resource('theme://admin@core/creators/cssBackground')
+		.create( {
+			css: {
+				backgroundColor: "white"
+			}
+		});
+
+	var blackBackground = PB.ThemeCache.resource('theme://admin@core/creators/cssBackground')
+		.create( {
+			css: {
+				backgroundColor: "black"
+			}
+		});
+
+
+	var verticalDesignWhite = {
+		getPageLayout: function( page, layoutData ) {
+			var layout = verticalLayout.getPageLayout( page, layoutData );
+			return layout;
+		},
+		getBackgroundId: function() {
+			return 'theme://admin@modern_full/backgrounds/white'
+		},
+		getWidgets: function(page) {
+			return [];
+		}
+	};
+	var verticalDesignBlack = {
+		getPageLayout: function( page, layoutData ) {
+			var layout = verticalLayout.getPageLayout( page, layoutData );
+			return layout;
+		},
+		getBackgroundId: function() {
+			return 'theme://admin@modern_full/backgrounds/black'
+		},
+		getWidgets: function(page) {
+			return [];
+		}
+	};
+	var horizontalDesignWhite = {
+		getPageLayout: function( page, layoutData ) {
+			var layout = horizontalLayout.getPageLayout( page, layoutData );
+			return layout;
+		},
+		getBackgroundId: function() {
+			return 'theme://admin@modern_full/backgrounds/white'
+		},
+		getWidgets: function(page) {
+			return [];
+		}
+	};
+	var horizontalDesignBlack = {
+		getPageLayout: function( page, layoutData ) {
+			var layout = horizontalLayout.getPageLayout( page, layoutData );
+			return layout;
+		},
+		getBackgroundId: function() {
+			return 'theme://admin@modern_full/backgrounds/black'
+		},
+		getWidgets: function(page) {
+			return [];
+		}
+	};
 
 	var Theme = {
 		id: "admin@modern_full",
@@ -398,6 +461,10 @@ function() {
 		description: "Full coverage layouts.",
 		screenshots: ["/t/admin@modern_full/showcase.jpg"],
 		designs: {
+			verticalWhite: verticalDesignWhite,
+			verticalBlack: verticalDesignBlack,
+			horizontalWhite: horizontalDesignWhite,
+			horizontalBlack: horizontalDesignBlack
 		},
 		layouts: {
 			horizontalLayout: horizontalLayout,
@@ -417,6 +484,8 @@ function() {
 			layout5Vhhhh: layout5Vhhhh
 		},
 		backgrounds: {
+			white: whiteBackground,
+			black: blackBackground
 		},
 		frames: {
 		},
